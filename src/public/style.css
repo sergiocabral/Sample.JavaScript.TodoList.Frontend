@@ -4,3 +4,12 @@
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
+
+body {
+  background-color: #1f2f16;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
