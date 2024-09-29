@@ -50,3 +50,32 @@ header input {
 .tarefas {
   flex-grow: 1;
 }
+
+.nova-tarefa {
+  display: flex;
+  gap: 0.5em;
+}
+
+.nova-tarefa input {
+  width: 100%;
+  padding: 0.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: #3e4e36;
+  color: #fff;
+  flex-grow: 1;
+}
+
+.nova-tarefa button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 5px;
+  background-color: #2196f3;
+  color: white;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.nova-tarefa button:hover {
+  opacity: 1;
+}
