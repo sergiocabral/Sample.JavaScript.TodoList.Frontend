@@ -79,3 +79,21 @@ header input {
 .nova-tarefa button:hover {
   opacity: 1;
 }
+
+@media screen and (max-width: 430px) {
+  body {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 250px) {
+  body {
+    font-size: 60%;
+  }
+}
+
+@media screen and (max-width: 200px) {
+  body {
+    font-size: 40%;
+  }
+}
