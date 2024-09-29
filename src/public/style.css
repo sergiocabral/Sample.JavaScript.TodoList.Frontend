@@ -54,6 +54,34 @@ header input {
   scrollbar-width: thin;
 }
 
+.tarefas ul {
+  list-style: none;
+}
+
+.tarefas li {
+  background-color: #3e4e36;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
+
+.tarefas li:last-child {
+  margin-bottom: 0;
+}
+
+.tarefas li.completa {
+  background-color: #4caf50;
+}
+
+.tarefas .descricao {
+  flex-grow: 1;
+}
+
 .nova-tarefa {
   display: flex;
   gap: 0.5em;
