@@ -48,4 +48,10 @@ async function carregarTarefas() {
   }
 }
 
+elFiltro.addEventListener('input', (event) => {
+  const filtro = event.target.value.toLowerCase();
+  const tarefasFiltradas = tarefas.filter(task => task.descricao.toLowerCase().includes(filtro));
+  montarListaDeTarefas(tarefasFiltradas);
+});
+
 window.onload = carregarTarefas;
