@@ -25,6 +25,8 @@ function montarListaDeTarefas(tarefas) {
     elTarefaApagar.classList.add("apagar");
     elTarefaApagar.textContent = "Apagar";
 
+    elTarefaItem.addEventListener('click', () => definirStatusDaTarefa(tarefa.id, !tarefa.completa));
+
     elTarefaItem.appendChild(elTarefaDescricao);
     elTarefaItem.appendChild(elTarefaStatus);
     elTarefaItem.appendChild(elTarefaApagar);
@@ -67,6 +69,23 @@ async function adicionarNovaTarefa(descricao) {
       await carregarTarefas();
     } else {
       console.error('Erro ao adicionar tarefa:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+  }
+}
+
+async function definirStatusDaTarefa(id, completa) {
+  try {
+    const response = await fetch(
+      `${API_URL}/tarefa/${id}/${completa ? 'completa' : 'incompleta'}`, {
+        method: 'PATCH',
+      });
+
+    if (response.ok) {
+      await carregarTarefas();
+    } else {
+      console.error('Erro ao atualizar tarefa:', response.statusText);
     }
   } catch (error) {
     console.error('Erro na requisição:', error);
