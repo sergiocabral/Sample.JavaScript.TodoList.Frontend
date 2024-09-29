@@ -48,6 +48,31 @@ async function carregarTarefas() {
   }
 }
 
+async function adicionarNovaTarefa(descricao) {
+  try {
+    const response = await fetch(
+      `${API_URL}/tarefa`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          descricao: descricao,
+          completa: false
+        })
+      });
+
+    if (response.ok) {
+      elNovaTarefaDescricao.value = '';
+      await carregarTarefas();
+    } else {
+      console.error('Erro ao adicionar tarefa:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+  }
+}
+
 elFiltro.addEventListener('input', (event) => {
   const filtro = event.target.value.toLowerCase();
   const tarefasFiltradas = tarefas.filter(task => task.descricao.toLowerCase().includes(filtro));
@@ -57,28 +82,7 @@ elFiltro.addEventListener('input', (event) => {
 elAdicionarNovaTarefa.addEventListener('click', async () => {
   const novaTarefaDescricao = elNovaTarefaDescricao.value.trim();
   if (novaTarefaDescricao !== '') {
-    try {
-      const response = await fetch(
-        `${API_URL}/tarefa`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            descricao: novaTarefaDescricao,
-            completa: false
-          })
-        });
-
-      if (response.ok) {
-        elNovaTarefaDescricao.value = '';
-        await carregarTarefas();
-      } else {
-        console.error('Erro ao adicionar tarefa:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-    }
+    adicionarNovaTarefa(novaTarefaDescricao);
   }
 });
 
