@@ -49,6 +49,9 @@ header input {
 
 .tarefas {
   flex-grow: 1;
+  overflow-y: auto;
+  scrollbar-color: #3e4e36 #2f3f26;
+  scrollbar-width: thin;
 }
 
 .nova-tarefa {
