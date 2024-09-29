@@ -10,6 +10,18 @@
   --adicionar-background-color: #2196f3;
 }
 
+[data-theme=light] {
+  --base-background-color: #eaf4e3;
+  --base-text-color: #2f4f2f;
+  --painel-background-color: #f2f9f1;
+  --tarefa-background-color: #d4e4d1;
+  --tarefa-completa-background-color: #9ac79d;
+  --tarefa-completa-status-background-color: #66a36c;
+  --tarefa-incompleta-status-background-color: #ffb74d;
+  --apagar-background-color: #e57373;
+  --adicionar-background-color: #66a36c;
+}
+
 * {
   margin: 0;
   padding: 0;
