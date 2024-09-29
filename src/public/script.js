@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:3000";
 
+const elTitulo = document.querySelector("h1");
 const elFiltro = document.getElementById("filtro");
 const elTarefas = document.getElementById("tarefas");
 const elNovaTarefaDescricao = document.getElementById("nova-tarefa");
@@ -123,6 +124,10 @@ elAdicionarNovaTarefa.addEventListener('click', async () => {
   if (novaTarefaDescricao !== '') {
     adicionarNovaTarefa(novaTarefaDescricao);
   }
+});
+
+elTitulo.addEventListener('click', (event) => {
+  document.body.attributes["data-theme"].value = document.body.attributes["data-theme"].value !== 'light' ? 'light' : 'dark';
 });
 
 window.onload = carregarTarefas;
