@@ -26,6 +26,10 @@ function montarListaDeTarefas(tarefas) {
     elTarefaApagar.textContent = "Apagar";
 
     elTarefaItem.addEventListener('click', () => definirStatusDaTarefa(tarefa.id, !tarefa.completa));
+    elTarefaApagar.addEventListener('click', event => {
+      event.stopPropagation();
+      apagarTarefa(tarefa.id);
+    });
 
     elTarefaItem.appendChild(elTarefaDescricao);
     elTarefaItem.appendChild(elTarefaStatus);
@@ -69,6 +73,22 @@ async function adicionarNovaTarefa(descricao) {
       await carregarTarefas();
     } else {
       console.error('Erro ao adicionar tarefa:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+  }
+}
+
+async function apagarTarefa(id) {
+  try {
+    const response = await fetch(
+      `${API_URL}/tarefa/${id}`, {
+        method: 'DELETE'
+      });
+    if (response.ok) {
+      await carregarTarefas();
+    } else {
+      console.error('Erro ao deletar tarefa:', response.statusText);
     }
   } catch (error) {
     console.error('Erro na requisição:', error);
