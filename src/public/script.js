@@ -54,4 +54,32 @@ elFiltro.addEventListener('input', (event) => {
   montarListaDeTarefas(tarefasFiltradas);
 });
 
+elAdicionarNovaTarefa.addEventListener('click', async () => {
+  const novaTarefaDescricao = elNovaTarefaDescricao.value.trim();
+  if (novaTarefaDescricao !== '') {
+    try {
+      const response = await fetch(
+        `${API_URL}/tarefa`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            descricao: novaTarefaDescricao,
+            completa: false
+          })
+        });
+
+      if (response.ok) {
+        elNovaTarefaDescricao.value = '';
+        await carregarTarefas();
+      } else {
+        console.error('Erro ao adicionar tarefa:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    }
+  }
+});
+
 window.onload = carregarTarefas;
