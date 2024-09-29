@@ -42,11 +42,15 @@ function montarListaDeTarefas(tarefas) {
 
 async function carregarTarefas() {
   try {
-    const response = await fetch(`${API_URL}/tarefas`);
+    const response = await fetch(`${API_URL}/tarefas`, {
+      credentials: 'include'
+    });
 
     if (response.ok) {
       tarefas = await response.json();
       montarListaDeTarefas(tarefas);
+    } else if (response.status === 401) {
+      window.location.href = `${API_URL}/auth/github`;
     } else {
       console.error("Erro ao carregar as tarefas:", response.statusText);
     }
@@ -60,6 +64,7 @@ async function adicionarNovaTarefa(descricao) {
     const response = await fetch(
       `${API_URL}/tarefa`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -72,6 +77,8 @@ async function adicionarNovaTarefa(descricao) {
     if (response.ok) {
       elNovaTarefaDescricao.value = '';
       await carregarTarefas();
+    } else if (response.status === 401) {
+      window.location.href = `${API_URL}/auth/github`;
     } else {
       console.error('Erro ao adicionar tarefa:', response.statusText);
     }
@@ -84,10 +91,13 @@ async function apagarTarefa(id) {
   try {
     const response = await fetch(
       `${API_URL}/tarefa/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include',
       });
     if (response.ok) {
       await carregarTarefas();
+    } else if (response.status === 401) {
+      window.location.href = `${API_URL}/auth/github`;
     } else {
       console.error('Erro ao deletar tarefa:', response.statusText);
     }
@@ -101,10 +111,13 @@ async function definirStatusDaTarefa(id, completa) {
     const response = await fetch(
       `${API_URL}/tarefa/${id}/${completa ? 'completa' : 'incompleta'}`, {
         method: 'PATCH',
+        credentials: 'include',
       });
 
     if (response.ok) {
       await carregarTarefas();
+    } else if (response.status === 401) {
+      window.location.href = `${API_URL}/auth/github`;
     } else {
       console.error('Erro ao atualizar tarefa:', response.statusText);
     }
