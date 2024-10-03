@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const STORAGE_KEY = "tarefas"
 
 const elTitulo = document.querySelector("h1");
 const elFiltro = document.getElementById("filtro");
@@ -42,18 +42,8 @@ function montarListaDeTarefas(tarefas) {
 
 async function carregarTarefas() {
   try {
-    const response = await fetch(`${API_URL}/tarefas`, {
-      credentials: 'include'
-    });
-
-    if (response.ok) {
-      tarefas = await response.json();
-      montarListaDeTarefas(tarefas);
-    } else if (response.status === 401) {
-      window.location.href = `${API_URL}/auth/github`;
-    } else {
-      console.error("Erro ao carregar as tarefas:", response.statusText);
-    }
+    tarefas = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+    montarListaDeTarefas(tarefas);
   } catch (error) {
     console.error("Erro na requisição:", error);
   }
@@ -61,27 +51,15 @@ async function carregarTarefas() {
 
 async function adicionarNovaTarefa(descricao) {
   try {
-    const response = await fetch(
-      `${API_URL}/tarefa`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          descricao: descricao,
-          completa: false
-        })
-      });
-
-    if (response.ok) {
-      elNovaTarefaDescricao.value = '';
-      await carregarTarefas();
-    } else if (response.status === 401) {
-      window.location.href = `${API_URL}/auth/github`;
-    } else {
-      console.error('Erro ao adicionar tarefa:', response.statusText);
-    }
+    tarefas = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+    tarefas.push({
+      id: Date.now(),
+      descricao: descricao,
+      completa: false
+    })
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tarefas))
+    elNovaTarefaDescricao.value = '';
+    await carregarTarefas();
   } catch (error) {
     console.error('Erro na requisição:', error);
   }
@@ -89,17 +67,12 @@ async function adicionarNovaTarefa(descricao) {
 
 async function apagarTarefa(id) {
   try {
-    const response = await fetch(
-      `${API_URL}/tarefa/${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-    if (response.ok) {
+    tarefas = JSON.parse(localStorage.getItem('tarefas') ?? '[]');
+    const index = tarefas.findIndex(tarefa => tarefa.id == id)
+    if (index >= 0) {
+      tarefas.splice(index, 1)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tarefas))
       await carregarTarefas();
-    } else if (response.status === 401) {
-      window.location.href = `${API_URL}/auth/github`;
-    } else {
-      console.error('Erro ao deletar tarefa:', response.statusText);
     }
   } catch (error) {
     console.error('Erro na requisição:', error);
@@ -108,18 +81,12 @@ async function apagarTarefa(id) {
 
 async function definirStatusDaTarefa(id, completa) {
   try {
-    const response = await fetch(
-      `${API_URL}/tarefa/${id}/${completa ? 'completa' : 'incompleta'}`, {
-        method: 'PATCH',
-        credentials: 'include',
-      });
-
-    if (response.ok) {
+    tarefas = JSON.parse(localStorage.getItem('tarefas') ?? '[]');
+    const index = tarefas.findIndex(tarefa => tarefa.id == id)
+    if (index >= 0) {
+      tarefas[index].completa = completa
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tarefas))
       await carregarTarefas();
-    } else if (response.status === 401) {
-      window.location.href = `${API_URL}/auth/github`;
-    } else {
-      console.error('Erro ao atualizar tarefa:', response.statusText);
     }
   } catch (error) {
     console.error('Erro na requisição:', error);
